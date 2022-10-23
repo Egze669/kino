@@ -14,15 +14,14 @@ class Cinema
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $seatNumber = null;
+    private ?int $seatNumber;
+    #[ORM\Column]
+    private ?int $lineNumber;
 
     #[ORM\Column]
-    private ?int $lineNumber = null;
+    private ?int $roomNumber;
 
-    #[ORM\Column]
-    private ?int $roomNumber = null;
-
-    #[ORM\ManyToOne(inversedBy: 'cinemas')]
+    #[ORM\ManyToOne(targetEntity: Reservation::class,inversedBy: 'cinemas')]
     private ?reservation $reservation = null;
 
     /**

@@ -1,20 +1,57 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello CinemaController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/maciej/kino_rezerwacje/src/Controller/CinemaController.php'|file_link(0) }}">src/Controller/CinemaController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/maciej/kino_rezerwacje/templates/cinema/index.html.twig'|file_link(0) }}">templates/cinema/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="example-wrapper">
+        {% set foo = 1 %}
+
+
+    </div>
+    <label>
+        <select>
+            <option>{{ foo }}</option>
+            <option>2</option>
+        </select>
+    </label>
+    {{ form_start(form) }}
+    <table style="border: black 1px solid;border-collapse: collapse;">
+
+        <tr style="border: black 1px solid;border-collapse: collapse;">
+            {% for cinema in cinemas %}
+            {% if cinema.roomNumber == foo %}
+            {% if cinema.reservation is null %}
+                {% set status = 'greenyellow' %}
+                {% set statusDis = 'enabled' %}
+            {% else%}
+                {% set status = 'red' %}
+                {% set statusDis = 'disabled' %}
+            {% endif %}
+            <td style="background-color: {{ status }};border: black 1px solid;border-collapse: collapse;"><label>
+                    <input type="checkbox" {{ statusDis }} name="seats[]" value="{{ cinema.id }}">
+                </label>{{ cinema.lineNumber }}-{{ cinema.seatNumber }}</td>
+            {% if cinema.seatNumber == 10 %}
+        </tr>
+        <tr style="border: black 1px solid;border-collapse: collapse;">
+
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </table>
+    <button type="submit">Submit</button>
+    {{ form_end(form) }}
 {% endblock %}
