@@ -54,11 +54,11 @@ class CinemaController extends AbstractController
             $seats = $query['seats'];
             $reserve = new Reservation();
             $reserve->setDate(new \DateTime());
-            $reserve->setSurname('test');
-            $reserve->setStatus('Zarezerwowane');
             for ($i = 0;$i<count($seats);$i++){
                 $cinema = $em->getRepository(Cinema::class)->find($seats[$i]);
-                $reserve->addCinema($cinema);
+                if (!empty($cinema)) {
+                    $reserve->addCinema($cinema);
+                }
             }
             $em->persist($reserve);
             $em->flush();

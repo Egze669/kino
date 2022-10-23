@@ -22,14 +22,14 @@ class Cinema
     private ?int $roomNumber;
 
     #[ORM\ManyToOne(targetEntity: Reservation::class,inversedBy: 'cinemas')]
-    private ?reservation $reservation = null;
+    private ?Reservation $reservation = null;
 
     /**
-     * @param $roomNumber
-     * @param $lineNumber
-     * @param $seatNumber
+     * @param int $roomNumber
+     * @param int $lineNumber
+     * @param int $seatNumber
      */
-    public function __construct($roomNumber, $lineNumber, $seatNumber)
+    public function __construct(int $roomNumber, int $lineNumber,int  $seatNumber)
     {
         $this->roomNumber = $roomNumber;
         $this->lineNumber = $lineNumber;
@@ -77,12 +77,12 @@ class Cinema
         return $this;
     }
 
-    public function getReservation(): ?reservation
+    public function getReservation(): ?Reservation
     {
         return $this->reservation;
     }
 
-    public function setReservation(?reservation $reservation): self
+    public function setReservation(?Reservation $reservation): self
     {
         $this->reservation = $reservation;
 
