@@ -1,5 +1,6 @@
 <?php
-
+//@psalm-method list<Payment> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+//@psalm-method list<Payment> findAll()
 namespace App\Repository;
 
 use App\Entity\Payment;
@@ -8,11 +9,12 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Payment>
- *
  * @method Payment|null find($id, $lockMode = null, $lockVersion = null)
  * @method Payment|null findOneBy(array $criteria, array $orderBy = null)
- * @method Payment[]    findAll()
- * @method Payment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<Payment> findAll()
+ * @method Payment[] findAll()
+ * @psalm-method list<Payment> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Payment[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PaymentRepository extends ServiceEntityRepository
 {

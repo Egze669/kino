@@ -46,7 +46,7 @@ class Reservation
 
 
     /**
-     * @return Collection<int, Cinema>
+     * @return Collection
      */
     public function getCinemas(): Collection
     {
@@ -55,10 +55,10 @@ class Reservation
 
     public function addCinema(Cinema $cinema): self
     {
-        if (!$this->cinemas->contains($cinema)) {
+
             $this->cinemas->add($cinema);
             $cinema->setReservation($this);
-        }
+
 
         return $this;
     }

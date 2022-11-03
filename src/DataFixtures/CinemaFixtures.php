@@ -10,7 +10,6 @@ class CinemaFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $rowLetters = ['A','B','C','D','E','F','G','H','I','J'];
         $row = 1;
         $seat = 1;
         for ($room= 1;$room<=2;$room++) {

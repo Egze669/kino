@@ -11,8 +11,10 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Cinema|null find($id, $lockMode = null, $lockVersion = null)
  * @method Cinema|null findOneBy(array $criteria, array $orderBy = null)
- * @method Cinema[]    findAll()
- * @method Cinema[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<Cinema> findAll()
+ * @method Cinema[] findAll()
+ * @psalm-method list<Cinema> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Cinema[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CinemaRepository extends ServiceEntityRepository
 {
