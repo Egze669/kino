@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -18,6 +19,11 @@ class Reservation
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
+
+    #[Assert\Count(
+        min: 1,minMessage: 'co za gowno'
+    )]
+    public $seats = null;
 
     #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Cinema::class)]
     private Collection $cinemas;
@@ -36,7 +42,15 @@ class Reservation
     {
         return $this->date;
     }
-
+    public function getSeats()
+    {
+        return $this->seats;
+    }
+    public function setSeats($seats)
+    {
+        $this->seats = $seats;
+        return $this;
+    }
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
