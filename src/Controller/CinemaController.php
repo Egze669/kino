@@ -54,14 +54,17 @@ class CinemaController extends AbstractController
                 new Assert\Count(min: 1,minMessage: 'Prosze zaznaczyc przynajmniej 1 miejsce')
             );
             if ($form->isValid()&&count($error)==0) {
-                $key = new Key('reservation.'.count($seats).'.'.implode(".",$seats));
-                dump($key);
-                $lock = $this->factory->createLockFromKey($key,1200);
-                $this->store->save($key);
-                $lock->acquire();
+                $keyArray = [];
+                foreach ($seats as $seat){
+                    $keySource = 'reservation.'.count($seats).'.'.$seat;
+                    $key = new Key($keySource);
+                    $lock = $this->factory->createLockFromKey($key,1200);
+                    array_push($keyArray,$keySource);
+                    $lock->acquire();
+                }
+                    $session->set('keyArray', $keyArray);
                 return $this->redirectToRoute('app_payment', parameters: array(
-                    'seats' => $seats,
-                    'key' => $key));
+                    'seats' => $seats));
             }
         }
 
@@ -95,11 +98,11 @@ class CinemaController extends AbstractController
             }
             $em->persist($reserve);
             $em->flush();
-            $key = new Key($request->query->all()['key']);
-//
-//            dump($this->store->exists($key));
-            if($this->factory->createLockFromKey($key,1200)->acquire()){
-                $this->factory->createLockFromKey($key,1200)->release();
+            foreach ($session->get('keyArray') as $keySession){
+                $key = new Key($keySession);
+                if($this->factory->createLockFromKey($key,1200)->acquire()){
+                    $this->factory->createLockFromKey($key,1200)->release();
+                }
             }
             return $this->redirectToRoute('app_reservation');
         }
