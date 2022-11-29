@@ -44,17 +44,17 @@ class CinemaRepository extends ServiceEntityRepository
 //    /**
 //     * @return Cinema[] Returns an array of Cinema objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
+    public function findByRoomNumber($value): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.roomNumber = :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
 //            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Cinema
 //    {

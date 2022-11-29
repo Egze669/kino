@@ -21,7 +21,7 @@ class Reservation
     private ?\DateTimeInterface $date = null;
 
     #[Assert\Count(
-        min: 1,minMessage: 'co za gowno'
+        min: 1,minMessage: 'Prosze wybrac przynajmniej 1 miejsce'
     )]
     public $seats = null;
 

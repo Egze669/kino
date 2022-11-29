@@ -29,35 +29,35 @@
             <option value="2">2</option>
         </select>
     </label>
-    <table style="border: black 1px solid;border-collapse: collapse;">
+{#    <table style="border: black 1px solid;border-collapse: collapse;">#}
 
-        <tr style="border: black 1px solid;border-collapse: collapse;">
-            {% for cinema in cinemas %}
-            {% if cinema.roomNumber == foo %}
-            {% if cinema.reservation is null %}
-                {% set status = 'greenyellow' %}
-                {% set statusDis = 'enabled' %}
-            {% else%}
-                {% set status = 'red' %}
-                {% set statusDis = 'disabled' %}
-            {% endif %}
-            <td style="background-color: {{ status }};border: black 1px solid;border-collapse: collapse;">
-                    <input type="checkbox" id="reservation_seats" {{ statusDis }} name="seats[]" value="{{ cinema.id }}">
-                {{ cinema.lineNumber }}-{{ cinema.seatNumber }}</td>
-            {% if cinema.seatNumber == 10 %}
-        </tr>
-        <tr style="border: black 1px solid;border-collapse: collapse;">
+{#        <tr style="border: black 1px solid;border-collapse: collapse;">#}
+{#            {% for cinema in cinemas %}#}
+{#            {% if cinema.roomNumber == foo %}#}
+{#            {% if cinema.reservation is null %}#}
+{#                {% set status = 'greenyellow' %}#}
+{#                {% set statusDis = 'enabled' %}#}
+{#            {% else%}#}
+{#                {% set status = 'red' %}#}
+{#                {% set statusDis = 'disabled' %}#}
+{#            {% endif %}#}
+{#            <td style="background-color: {{ status }};border: black 1px solid;border-collapse: collapse;">#}
+{#                    <input type="checkbox" id="reservation_seats" {{ statusDis }} name="seats[]" value="{{ cinema.id }}">#}
+{#                {{ cinema.lineNumber }}-{{ cinema.seatNumber }}</td>#}
+{#            {% if cinema.seatNumber == 10 %}#}
+{#        </tr>#}
+{#        <tr style="border: black 1px solid;border-collapse: collapse;">#}
 
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-        </tr>
-    </table>
-    {% if errors|length > 0 %}
-    {% for error in errors%}
-        <p>{{ error.message }}</p>
-    {% endfor %}
-    {% endif %}
+{#            {% endif %}#}
+{#            {% endif %}#}
+{#            {% endfor %}#}
+{#        </tr>#}
+{#    </table>#}
+{#    {% if errors|length > 0 %}#}
+{#    {% for error in errors%}#}
+{#        <p>{{ error.message }}</p>#}
+{#    {% endfor %}#}
+{#    {% endif %}#}
     <button type="submit" formmethod="post">Submit</button>
     {{ form_end(form) }}
 {% endblock %}

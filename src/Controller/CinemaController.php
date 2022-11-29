@@ -36,25 +36,18 @@ class CinemaController extends AbstractController
     #[Route('/reservationForm', name: 'app_reservation')]
     public function reservation(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator,Session $session): Response
     {
-        $error= [];
+//        $error= [];
         $em = $doctrine->getManager();
         $cinemas = $em->getRepository(Cinema::class)->findAll();
-        $form = $this->createForm(ReservationType::class);
+//        $seatsInRoom = $em->getRepository(Cinema::class)->findByRoomNumber(1);
+        $form = $this->createForm(ReservationType::class,null,[
+            'seats'=>$cinemas
+        ]);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-
-            if(array_key_exists('seats',$request->request->all())){
-                /** @var array $seats */
-                $seats = $request->request->all()['seats'];
-            }else{
-                $seats=[];
-            }
-            $error = $validator->validate(
-                $seats,
-                new Assert\Count(min: 1,minMessage: 'Prosze zaznaczyc przynajmniej 1 miejsce')
-            );
-            if ($form->isValid()&&count($error)==0) {
+        if ($form->isSubmitted()&&$form->isValid()) {
+                $seats = $form['seats']->getData();
                 $keyArray = [];
+
                 foreach ($seats as $seat){
                     $keySource = 'reservation.'.count($seats).'.'.$seat;
                     $key = new Key($keySource);
@@ -62,26 +55,24 @@ class CinemaController extends AbstractController
                     array_push($keyArray,$keySource);
                     $lock->acquire();
                 }
+                    $session->set('seatArray',$seats);
                     $session->set('keyArray', $keyArray);
-                return $this->redirectToRoute('app_payment', parameters: array(
-                    'seats' => $seats));
+
+                return $this->redirectToRoute('app_payment');
             }
-        }
 
         return $this->renderForm('cinema/index.html.twig', [
             'form' => $form,
-            'cinemas' => $cinemas,
-            'errors'=>$error
+            'cinemas' => $cinemas
         ]);
     }
 
     #[Route('/reservationPayment', name: 'app_payment')]
     public function payment(ManagerRegistry $doctrine, Request $request,Session $session): Response
     {
-        dump($request->query->all());
         $em = $doctrine->getManager();
         /** @var array $seats */
-        $seats = $request->query->all()['seats'];
+        $seats = $session->get('seatArray');
 
         $form = $this->createForm(PaymentType::class);
         $form->handleRequest($request);
