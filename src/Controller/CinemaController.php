@@ -3,13 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Cinema;
-use App\Entity\Payment;
 use App\Entity\Reservation;
 use App\Form\PaymentType;
 use App\Form\ReservationType;
-use Doctrine\ORM\Cache\Lock;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +15,6 @@ use Symfony\Component\Lock\Key;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
-use Symfony\Component\Validator\Constraints\Date;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use function PHPUnit\Framework\isNull;
 
 class CinemaController extends AbstractController
 {
@@ -34,12 +27,11 @@ class CinemaController extends AbstractController
     }
 
     #[Route('/reservationForm', name: 'app_reservation')]
-    public function reservation(ManagerRegistry $doctrine, Request $request, ValidatorInterface $validator,Session $session): Response
+    public function reservation(ManagerRegistry $doctrine, Request $request,Session $session): Response
     {
 //        $error= [];
         $em = $doctrine->getManager();
         $cinemas = $em->getRepository(Cinema::class)->findAll();
-//        $seatsInRoom = $em->getRepository(Cinema::class)->findByRoomNumber(1);
         $form = $this->createForm(ReservationType::class,null,[
             'seats'=>$cinemas
         ]);
@@ -49,10 +41,10 @@ class CinemaController extends AbstractController
                 $keyArray = [];
 
                 foreach ($seats as $seat){
-                    $keySource = 'reservation.'.count($seats).'.'.$seat;
+                    $keySource = 'reservation.1.'.$seat;
                     $key = new Key($keySource);
                     $lock = $this->factory->createLockFromKey($key,1200);
-                    array_push($keyArray,$keySource);
+                    $keyArray[]=$keySource;
                     $lock->acquire();
                 }
                     $session->set('seatArray',$seats);

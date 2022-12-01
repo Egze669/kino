@@ -24,7 +24,7 @@ class ReservationType extends AbstractType
         $color = '';
         foreach ($options['seats'] as $seat) {
 
-            if ($seat->getRoomNumber() == $options['room_number']) {
+            if ((int)$seat->getRoomNumber() === (int)$options['room_number']) {
                 if(is_null($seat->getReservation())){
                     $enable = 'enabled';
                     $color = 'blue';
@@ -54,7 +54,7 @@ class ReservationType extends AbstractType
     {
         $resolver->setRequired('seats');
         $resolver->setDefaults([
-            'room_number' => 1,
+            'room_number' => 2,
             'data_class' => Reservation::class,
         ]);
     }
